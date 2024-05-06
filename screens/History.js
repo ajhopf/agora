@@ -1,11 +1,10 @@
-import {StyleSheet, Text, View} from "react-native";
-import {GLOBAL_COLORS} from "../constants/Colors";
+import { StyleSheet, Text, View } from "react-native";
+import { GLOBAL_COLORS } from "../constants/Colors";
 
-const Home = () => {
+const History = () => {
   return <View style={styles.container}>
-    <Text style={{color: GLOBAL_COLORS.accent}}>Home screen</Text>
+    <Text style={{color: GLOBAL_COLORS.accent}}>History</Text>
   </View>
-
 };
 
 const styles = StyleSheet.create({
@@ -17,5 +16,4 @@ const styles = StyleSheet.create({
   }
 });
 
-
-export default Home;
+export default History;
