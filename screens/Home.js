@@ -1,19 +1,24 @@
-import {StyleSheet, Text, View} from "react-native";
+import { Animated, Button, StyleSheet, View } from "react-native";
 import {GLOBAL_COLORS} from "../constants/Colors";
+import { useEffect, useRef, useState } from "react";
+import FloatingCircleMoving from "../components/FloatingCircleMoving";
+import FloatingCirclePulsating from "../components/FloatingCirclePulsating";
 
 const Home = () => {
-  return <View style={styles.container}>
-    <Text style={{color: GLOBAL_COLORS.accent}}>Home screen</Text>
-  </View>
+  return (
+    <View style={styles.container}>
+      {/*<FloatingCircleMoving />*/}
+      <FloatingCirclePulsating />
 
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: GLOBAL_COLORS.secondary,
-    alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });
 
