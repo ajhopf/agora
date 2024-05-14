@@ -2,6 +2,7 @@ import { Animated, Pressable, StyleSheet, Text } from "react-native";
 import React, { useEffect, useState } from "react";
 import { GLOBAL_COLORS } from "../../constants/Colors";
 import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
+import { useNavigationContext } from "../../store/navigationContext";
 
 interface FloatingCirclePulsatingProps {
   toggleTimer: () => void,
@@ -14,6 +15,7 @@ interface FloatingCirclePulsatingProps {
 
 const MeditationCircle: React.FC<FloatingCirclePulsatingProps> = ({duration,toggleTimer, inhale, exhale, timerKey, isPlaying}) => {
   const [scale] = useState<Animated.Value>(new Animated.Value(1));
+  const { setHideTabBar } = useNavigationContext();
 
   const loop: Animated.CompositeAnimation = Animated.loop(
     Animated.sequence([
@@ -34,9 +36,10 @@ const MeditationCircle: React.FC<FloatingCirclePulsatingProps> = ({duration,togg
     if (isPlaying) {
       loop.start()
     }
+    setHideTabBar(isPlaying);
 
     return () => loop.stop()
-  }, [isPlaying])
+  }, [isPlaying, setHideTabBar])
 
   const handlePress = () => {
     if (isPlaying) {

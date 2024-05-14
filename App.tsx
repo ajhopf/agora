@@ -14,6 +14,7 @@ import History from "./screens/History";
 import { GLOBAL_COLORS } from "./constants/Colors";
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { NavigationProvider, useNavigationContext } from "./store/navigationContext";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -27,6 +28,8 @@ const AuthStack = () => {
 }
 
 const AuthenticatedStack = () => {
+  const {hideTabBar} = useNavigationContext();
+
   return <Tab.Navigator
     screenOptions={{
       headerStyle: {
@@ -34,6 +37,7 @@ const AuthenticatedStack = () => {
       },
       headerTintColor: GLOBAL_COLORS.white,
       tabBarStyle: {
+        display: hideTabBar ? 'none' : undefined,
         backgroundColor: GLOBAL_COLORS.primary
       },
       tabBarActiveTintColor: GLOBAL_COLORS.accent,
@@ -43,7 +47,7 @@ const AuthenticatedStack = () => {
       name='Home'
       component={Home}
       options={{
-        tabBarIcon: ({focused, color}) => (
+        tabBarIcon: ({color}) => (
           <MaterialCommunityIcons
             name="meditation"
             size={36}
@@ -71,9 +75,11 @@ export default function App() {
   return (
     <View style={styles.container}>
       <StatusBar style="light" />
-      <NavigationContainer>
-        <AuthenticatedStack />
-      </NavigationContainer>
+      <NavigationProvider>
+        <NavigationContainer>
+          <AuthenticatedStack />
+        </NavigationContainer>
+      </NavigationProvider>
     </View>
   );
 }
