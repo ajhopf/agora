@@ -3,40 +3,29 @@ import React, { SetStateAction, useState } from "react";
 import { GLOBAL_COLORS } from "../../constants/Colors";
 
 interface ModalProps {
+  duration: number,
+  setDuration: React.Dispatch<SetStateAction<number>>,
+  inhale: number,
+  setInhale: React.Dispatch<SetStateAction<number>>,
+  exhale: number,
+  setExhale: React.Dispatch<SetStateAction<number>>,
   modalVisible: boolean,
-  setModalVisible: React.Dispatch<SetStateAction<boolean>>
+  setModalVisible: React.Dispatch<SetStateAction<boolean>>,
+  presetDurations: {text: string, value:number}[]
 }
 
-const presetDurations = [
+const MeditationConfigurationModal: React.FC<ModalProps> = (
   {
-    text: '5 minutes',
-    value: 300
-  },
-  {
-    text: '10 minutes',
-    value: 600
-  },
-  {
-    text: '15 minutes',
-    value: 900
-  },
-  {
-    text: '20 minutes',
-    value: 1200
-  },
-  {
-    text: '30 minutes',
-    value: 1800
-  },
-  {
-    text: '60 minutes',
-    value: 3600
-  }
-]
-
-const MeditationConfigurationModal: React.FC<ModalProps> = ({modalVisible, setModalVisible}) => {
-  const [duration, setDuration] = useState(600)
-
+    inhale,
+    setInhale,
+    exhale,
+    setExhale,
+    duration,
+    setDuration,
+    modalVisible,
+    setModalVisible,
+    presetDurations
+  }) => {
   return <Modal
     animationType='slide'
     transparent={true}
@@ -69,16 +58,23 @@ const MeditationConfigurationModal: React.FC<ModalProps> = ({modalVisible, setMo
           <View style={{flex: 1, marginRight: 2}}>
             <Text style={styles.label}>Inhale</Text>
             <View style={styles.configSectionContainer}>
-              <TextInput/>
+              <TextInput
+                value={inhale.toString()}
+                onChange={(value) => setInhale(+value)}
+                keyboardType='number-pad'
+                style={{backgroundColor: GLOBAL_COLORS.white, fontSize: 16, width: 30, textAlign: 'center'}}/>
+              <Text style={styles.durationText}>seconds</Text>
             </View>
           </View>
           <View style={{flex: 1, marginLeft: 2}}>
             <Text style={styles.label}>Exhale</Text>
             <View style={styles.configSectionContainer}>
               <TextInput
+                value={exhale.toString()}
+                onChange={(value) => setExhale(+value)}
                 keyboardType='number-pad'
                 style={{backgroundColor: GLOBAL_COLORS.white, fontSize: 16, width: 30, textAlign: 'center'}}/>
-              <Text>seconds</Text>
+              <Text style={styles.durationText}>seconds</Text>
             </View>
           </View>
         </View>
@@ -86,7 +82,7 @@ const MeditationConfigurationModal: React.FC<ModalProps> = ({modalVisible, setMo
         <Pressable
           style={[styles.button, styles.buttonClose, {marginTop: 100}]}
           onPress={() => setModalVisible(!modalVisible)}>
-          <Text>Hide Modal</Text>
+          <Text style={styles.durationText}>Hide Modal</Text>
         </Pressable>
       </Pressable>
     </Pressable>
@@ -128,6 +124,7 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'space-evenly',
     borderRadius: 4,
+    alignItems: 'center'
   },
   durationText: {
     color: GLOBAL_COLORS.white,

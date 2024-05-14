@@ -8,23 +8,23 @@ interface FloatingCirclePulsatingProps {
   inhale: number,
   exhale: number,
   timerKey: number,
-  isPlaying: boolean
+  isPlaying: boolean,
+  duration: number
 }
 
-const FloatingCirclePulsating: React.FC<FloatingCirclePulsatingProps> = ({toggleTimer, inhale, exhale, timerKey, isPlaying}) => {
+const FloatingCirclePulsating: React.FC<FloatingCirclePulsatingProps> = ({duration,toggleTimer, inhale, exhale, timerKey, isPlaying}) => {
   const [scale] = useState<Animated.Value>(new Animated.Value(1));
-  const [duration, setDuration] = useState<number>(15000)
 
   const loop: Animated.CompositeAnimation = Animated.loop(
     Animated.sequence([
       Animated.timing(scale, {
         toValue: 1.4,
-        duration: inhale,
+        duration: inhale*1000,
         useNativeDriver: true,
       }),
       Animated.timing(scale, {
         toValue: 1,
-        duration: exhale,
+        duration: exhale*1000,
         useNativeDriver: true,
       }),
     ]),{iterations: -1}
@@ -61,7 +61,7 @@ const FloatingCirclePulsating: React.FC<FloatingCirclePulsatingProps> = ({toggle
           let minutes = Math.floor((remainingTime % 3600) / 60)
           let seconds = remainingTime % 60
 
-          return <Text>{`${hours > 0 ? (hours + ':') : ''}${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`}</Text>}}
+          return <Text style={styles.text}>{`${hours > 0 ? (hours + ':') : ''}${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`}</Text>}}
       </CountdownCircleTimer>
     </Animated.View>
   </Pressable>
@@ -84,7 +84,8 @@ const styles = StyleSheet.create({
     overflow: 'hidden'
   },
   text: {
-
+    color: GLOBAL_COLORS.white,
+    fontSize: 18
   }
 })
 

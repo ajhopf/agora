@@ -3,15 +3,23 @@ import React, { useState } from "react";
 
 import FloatingCirclePulsating from "../components/Home/FloatingCirclePulsating";
 import MeditationConfigurationModal from "../components/Home/MeditationConfigurationModal";
+import useMeditationConfig from "../hooks/useMeditationConfig";
 
 interface HomeProps {}
 
 const Home: React.FC <HomeProps> = () => {
   const [timerKey, setTimerKey] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [modalVisible, setModalVisible] = useState<boolean>(false)
-  const [inhale, setInhale] = useState<number>();
-  const [exhale, setExhale] = useState<number>();
+  const [configModalVisible, setConfigModalVisible] = useState<boolean>(false)
+  const {
+    duration,
+    setDuration,
+    inhale,
+    setInhale,
+    exhale,
+    setExhale,
+    presetDurations
+  } = useMeditationConfig();
 
   const restartTimer = (): void => {
     setTimerKey(prevState => prevState + 1)
@@ -25,17 +33,25 @@ const Home: React.FC <HomeProps> = () => {
   }
 
   const openModal = (): void => {
-    setModalVisible(true)
+    setConfigModalVisible(true)
   }
 
   return (
     <View style={styles.container}>
       <MeditationConfigurationModal
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible} />
+        presetDurations={presetDurations}
+        duration={duration}
+        setDuration={setDuration}
+        inhale={inhale}
+        setInhale={setInhale}
+        exhale={exhale}
+        setExhale={setExhale}
+        modalVisible={configModalVisible}
+        setModalVisible={setConfigModalVisible} />
       <FloatingCirclePulsating
-        inhale={4000}
-        exhale={12000}
+        duration={duration}
+        inhale={inhale}
+        exhale={exhale}
         timerKey={timerKey}
         isPlaying={isPlaying}
         toggleTimer={toggleTimer}/>
