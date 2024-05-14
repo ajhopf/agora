@@ -1,9 +1,11 @@
-import { Button, StyleSheet, View, Modal, Text, Alert, Pressable } from "react-native";
+import { StyleSheet, View} from "react-native";
 import React, { useState } from "react";
 
-import FloatingCirclePulsating from "../components/Home/FloatingCirclePulsating";
+import MeditationCircle from "../components/Home/MeditationCircle";
 import MeditationConfigurationModal from "../components/Home/MeditationConfigurationModal";
 import useMeditationConfig from "../hooks/useMeditationConfig";
+import AgoraButton from "../components/UI/AgoraButton";
+import { GLOBAL_COLORS } from "../constants/Colors";
 
 interface HomeProps {}
 
@@ -48,17 +50,19 @@ const Home: React.FC <HomeProps> = () => {
         setExhale={setExhale}
         modalVisible={configModalVisible}
         setModalVisible={setConfigModalVisible} />
-      <FloatingCirclePulsating
+      <MeditationCircle
         duration={duration}
         inhale={inhale}
         exhale={exhale}
         timerKey={timerKey}
         isPlaying={isPlaying}
         toggleTimer={toggleTimer}/>
-      <View style={styles.buttonsContainer}>
-        <Button onPress={restartTimer} title={'Restart'} />
-        <Button onPress={openModal} title={'Configuration'} />
-      </View>
+      {
+        !isPlaying && <View style={styles.buttonsContainer}>
+          <AgoraButton onPress={restartTimer} text={'Restart'} textColor={GLOBAL_COLORS.white} />
+          <AgoraButton onPress={openModal} text={'Configuration'} textColor={GLOBAL_COLORS.white} />
+        </View>
+      }
     </View>
   );
 };
@@ -74,7 +78,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignSelf: 'flex-end',
-    justifyContent: 'space-around',
     marginBottom: 24
   }
 });

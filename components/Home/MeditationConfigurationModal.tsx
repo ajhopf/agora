@@ -1,6 +1,7 @@
-import { TouchableOpacity, Alert, Modal, Pressable, StyleSheet, Text, View, TextInput } from "react-native";
-import React, { SetStateAction, useState } from "react";
+import { Alert, Modal, Pressable, StyleSheet, Text, View, TextInput } from "react-native";
+import React, { SetStateAction } from "react";
 import { GLOBAL_COLORS } from "../../constants/Colors";
+import AgoraButton from "../UI/AgoraButton";
 
 interface ModalProps {
   duration: number,
@@ -60,7 +61,7 @@ const MeditationConfigurationModal: React.FC<ModalProps> = (
             <View style={styles.configSectionContainer}>
               <TextInput
                 value={inhale.toString()}
-                onChange={(value) => setInhale(+value)}
+                onChangeText={(value) => setInhale(+value)}
                 keyboardType='number-pad'
                 style={{backgroundColor: GLOBAL_COLORS.white, fontSize: 16, width: 30, textAlign: 'center'}}/>
               <Text style={styles.durationText}>seconds</Text>
@@ -71,19 +72,17 @@ const MeditationConfigurationModal: React.FC<ModalProps> = (
             <View style={styles.configSectionContainer}>
               <TextInput
                 value={exhale.toString()}
-                onChange={(value) => setExhale(+value)}
+                onChangeText={(value) => setExhale(+value)}
                 keyboardType='number-pad'
                 style={{backgroundColor: GLOBAL_COLORS.white, fontSize: 16, width: 30, textAlign: 'center'}}/>
               <Text style={styles.durationText}>seconds</Text>
             </View>
           </View>
         </View>
-
-        <Pressable
-          style={[styles.button, styles.buttonClose, {marginTop: 100}]}
-          onPress={() => setModalVisible(!modalVisible)}>
-          <Text style={styles.durationText}>Hide Modal</Text>
-        </Pressable>
+        <AgoraButton
+          text={'Done'}
+          onPress={() => setModalVisible(!modalVisible)}
+          textColor={GLOBAL_COLORS.white}/>
       </Pressable>
     </Pressable>
   </Modal>
@@ -136,14 +135,6 @@ const styles = StyleSheet.create({
   },
   inhaleExhaleContainer: {
     flexDirection: 'row'
-  },
-  button: {
-    borderRadius: 4,
-    padding: 10,
-    elevation: 2,
-  },
-  buttonClose: {
-    backgroundColor: GLOBAL_COLORS.primary,
   },
 })
 

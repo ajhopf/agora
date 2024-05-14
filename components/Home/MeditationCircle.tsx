@@ -12,7 +12,7 @@ interface FloatingCirclePulsatingProps {
   duration: number
 }
 
-const FloatingCirclePulsating: React.FC<FloatingCirclePulsatingProps> = ({duration,toggleTimer, inhale, exhale, timerKey, isPlaying}) => {
+const MeditationCircle: React.FC<FloatingCirclePulsatingProps> = ({duration,toggleTimer, inhale, exhale, timerKey, isPlaying}) => {
   const [scale] = useState<Animated.Value>(new Animated.Value(1));
 
   const loop: Animated.CompositeAnimation = Animated.loop(
@@ -55,6 +55,9 @@ const FloatingCirclePulsating: React.FC<FloatingCirclePulsatingProps> = ({durati
         duration={duration}
         colors={[GLOBAL_COLORS.primary, GLOBAL_COLORS.secondary , GLOBAL_COLORS.accent]}
         colorsTime={[duration,duration/2, 0]}
+        onComplete={() => {
+          return { shouldRepeat: false } // repeat animation in 1.5 seconds
+        }}
       >
         {({ remainingTime }) => {
           const hours = Math.floor(remainingTime / 3600)
@@ -89,4 +92,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default FloatingCirclePulsating;
+export default MeditationCircle;

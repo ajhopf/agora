@@ -21,7 +21,7 @@ function useMeditationConfig() {
     setInhale,
     exhale,
     setExhale,
-    presetDurations, // Expose preset durations for UI
+    presetDurations
   };
 }
 
