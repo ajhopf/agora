@@ -35,6 +35,7 @@ const AuthenticatedStack = () => {
       headerStyle: {
         backgroundColor: GLOBAL_COLORS.primary
       },
+      headerShown: !hideTabBar,
       headerTintColor: GLOBAL_COLORS.white,
       tabBarStyle: {
         display: hideTabBar ? 'none' : undefined,
@@ -72,10 +73,12 @@ const AuthenticatedStack = () => {
 }
 
 export default function App() {
+
+
   return (
     <View style={styles.container}>
-      <StatusBar style="light" />
       <NavigationProvider>
+        <StatusBar style="light" />
         <NavigationContainer>
           <AuthenticatedStack />
         </NavigationContainer>
