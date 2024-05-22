@@ -15,6 +15,7 @@ import { GLOBAL_COLORS } from "./constants/Colors";
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { NavigationProvider, useNavigationContext } from "./store/navigationContext";
+import { registerRootComponent } from "expo";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -73,19 +74,20 @@ const AuthenticatedStack = () => {
 }
 
 export default function App() {
-
-
   return (
     <View style={styles.container}>
       <NavigationProvider>
         <StatusBar style="light" />
         <NavigationContainer>
-          <AuthenticatedStack />
+          {/*<AuthenticatedStack />*/}
+          <AuthStack />
         </NavigationContainer>
       </NavigationProvider>
     </View>
   );
 }
+
+registerRootComponent(App);
 
 const styles = StyleSheet.create({
   container: {
