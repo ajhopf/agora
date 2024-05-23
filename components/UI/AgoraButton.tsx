@@ -3,7 +3,7 @@ import React from "react";
 import { GLOBAL_COLORS } from "../../constants/Colors";
 
 interface AgoraButtonProps {
-  onPress: () => {},
+  onPress: () => {} | void,
   text: string,
   textColor: `#${string}`
 }

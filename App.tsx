@@ -15,6 +15,12 @@ import { GLOBAL_COLORS } from "./constants/Colors";
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { NavigationProvider, useNavigationContext } from "./store/navigationContext";
+import { initializeApp, getApps, getApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { FirebaseProvider, useFirebase } from "./store/firebaseContext";
+
+//import { LogBox } from 'react-native'; // Import LogBox
+//LogBox.ignoreLogs(['Setting a timer']); // Ignore the warning log
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -72,17 +78,28 @@ const AuthenticatedStack = () => {
   </Tab.Navigator>
 }
 
-export default function App() {
+const Root = () => {
+  const {user} = useFirebase();
 
+  console.log(user)
 
   return (
+    <NavigationProvider>
+      <NavigationContainer>
+        {!user && <AuthStack/>}
+        {user && <AuthenticatedStack/>}
+      </NavigationContainer>
+    </NavigationProvider>
+  );
+}
+
+export default function App() {
+  return (
     <View style={styles.container}>
-      <NavigationProvider>
-        <StatusBar style="light" />
-        <NavigationContainer>
-          <AuthenticatedStack />
-        </NavigationContainer>
-      </NavigationProvider>
+      <StatusBar style="light" />
+      <FirebaseProvider>
+        <Root/>
+      </FirebaseProvider>
     </View>
   );
 }
