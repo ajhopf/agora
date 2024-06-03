@@ -1,8 +1,9 @@
 import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
 
 import { initializeApp, getApps, getApp, FirebaseError, FirebaseApp  } from 'firebase/app';
-import { getAuth, Auth, onAuthStateChanged, User } from 'firebase/auth';
+import { Auth, onAuthStateChanged, User, initializeAuth, getReactNativePersistence  } from 'firebase/auth';
 import { getDatabase, Database } from 'firebase/database';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 const firebaseConfig = {
@@ -18,7 +19,7 @@ const firebaseConfig = {
 interface FirebaseContextValue {
   app: FirebaseApp | null;
   auth: Auth | null;
-  db: Database | null; // Include database if needed
+  db: Database | null;
   isLoading: boolean;
   error: FirebaseError | null;
   user: User | null
@@ -56,8 +57,10 @@ export const FirebaseProvider: React.FC<{ children: ReactNode }> = ({ children }
     const initFirebase = async () => {
       try {
         const app: FirebaseApp = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
-        const auth: Auth = getAuth(app);
-        const db: Database = getDatabase(app); // Initialize database if needed
+        const auth: Auth = initializeAuth(app, {
+          persistence: getReactNativePersistence(AsyncStorage)
+        });
+        const db: Database = getDatabase(app);
 
         setFirebaseData({ app, auth, db, isLoading: false, error: null, user: null });
       } catch (error) {
