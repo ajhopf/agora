@@ -3,6 +3,7 @@ import React, { createContext, ReactNode, useContext, useEffect, useState } from
 import { initializeApp, getApps, getApp, FirebaseError, FirebaseApp  } from 'firebase/app';
 import { Auth, onAuthStateChanged, User, initializeAuth, getReactNativePersistence  } from 'firebase/auth';
 import { getDatabase, Database } from 'firebase/database';
+import { getFirestore, Firestore } from 'firebase/firestore';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
@@ -13,13 +14,14 @@ const firebaseConfig = {
   storageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.EXPO_PUBLIC_FIREBASE_APP_ID,
-  measurementId: process.env.EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID
+  measurementId: process.env.EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID,
+  // databaseURL: `https://${process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID}-default-rtdb.firebaseio.com/`
 };
 
 interface FirebaseContextValue {
   app: FirebaseApp | null;
   auth: Auth | null;
-  db: Database | null;
+  db: Firestore | null;
   isLoading: boolean;
   error: FirebaseError | null;
   user: User | null
@@ -60,7 +62,7 @@ export const FirebaseProvider: React.FC<{ children: ReactNode }> = ({ children }
         const auth: Auth = initializeAuth(app, {
           persistence: getReactNativePersistence(AsyncStorage)
         });
-        const db: Database = getDatabase(app);
+        const db: Firestore = getFirestore(app);
 
         setFirebaseData({ app, auth, db, isLoading: false, error: null, user: null });
       } catch (error) {

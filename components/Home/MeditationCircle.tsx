@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { GLOBAL_COLORS } from "../../constants/Colors";
 import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 import { useNavigationContext } from "../../store/navigationContext";
+import useDatabase from "../../hooks/useDatabase";
 
 interface FloatingCirclePulsatingProps {
   toggleTimer: () => void,
@@ -15,6 +16,7 @@ interface FloatingCirclePulsatingProps {
 
 const MeditationCircle: React.FC<FloatingCirclePulsatingProps> = ({duration,toggleTimer, inhale, exhale, timerKey, isPlaying}) => {
   const [scale] = useState<Animated.Value>(new Animated.Value(1));
+  const { saveMeditation } = useDatabase()
   const { setHideTabBar } = useNavigationContext();
 
   const loop: Animated.CompositeAnimation = Animated.loop(
@@ -50,6 +52,12 @@ const MeditationCircle: React.FC<FloatingCirclePulsatingProps> = ({duration,togg
     toggleTimer()
   }
 
+  const handleEndOfMeditation = () => {
+    console.log('saving...')
+    saveMeditation(duration)
+      .then(() => console.log('saved again'));
+  }
+
   return <Pressable style={styles.container} onPress={handlePress}>
     <Animated.View style={[styles.circle, {transform: [{scale: scale}]} ]}>
       <CountdownCircleTimer
@@ -59,6 +67,7 @@ const MeditationCircle: React.FC<FloatingCirclePulsatingProps> = ({duration,togg
         colors={[GLOBAL_COLORS.primary, GLOBAL_COLORS.secondary , GLOBAL_COLORS.accent]}
         colorsTime={[duration,duration/2, 0]}
         onComplete={() => {
+          handleEndOfMeditation();
           return { shouldRepeat: false } // repeat animation in 1.5 seconds
         }}
       >

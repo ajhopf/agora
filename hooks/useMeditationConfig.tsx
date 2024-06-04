@@ -6,7 +6,7 @@ function useMeditationConfig() {
   const [exhale, setExhale] = useState(12);
 
   const presetDurations = [
-    { text: '5 minutes', value: 300 },
+    { text: '5 minutes', value: 10 },
     { text: '10 minutes', value: 600 },
     { text: '15 minutes', value: 900 },
     { text: '20 minutes', value: 1200 },
