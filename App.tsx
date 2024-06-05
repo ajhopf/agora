@@ -18,6 +18,7 @@ import { NavigationProvider, useNavigationContext } from "./store/navigationCont
 import { FirebaseProvider, useFirebase } from "./store/firebaseContext";
 import firebase from "firebase/compat";
 import Persistence = firebase.auth.Auth.Persistence;
+import { MeditationProvider } from "./store/meditationContext";
 
 //import { LogBox } from 'react-native'; // Import LogBox
 //LogBox.ignoreLogs(['Setting a timer']); // Ignore the warning log
@@ -96,7 +97,7 @@ const Root = () => {
     <NavigationProvider>
       <NavigationContainer>
         {!user && <AuthStack/>}
-        {user && <AuthenticatedStack/>}
+        {user && <MeditationProvider><AuthenticatedStack/></MeditationProvider>}
       </NavigationContainer>
     </NavigationProvider>
   );
