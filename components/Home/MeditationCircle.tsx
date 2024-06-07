@@ -5,6 +5,7 @@ import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 import { useNavigationContext } from "../../store/navigationContext";
 import useDatabase from "../../hooks/useDatabase";
 import { useMeditation } from "../../store/meditationContext";
+import { useFirebase } from "../../store/firebaseContext";
 
 interface FloatingCirclePulsatingProps {
   toggleTimer: () => void,
@@ -17,8 +18,9 @@ interface FloatingCirclePulsatingProps {
 
 const MeditationCircle: React.FC<FloatingCirclePulsatingProps> = ({duration,toggleTimer, inhale, exhale, timerKey, isPlaying}) => {
   const [scale] = useState<Animated.Value>(new Animated.Value(1));
+  const { user} = useFirebase();
   const { saveMeditation } = useDatabase();
-  const { setRefetchMeditations, addMeditation} = useMeditation();
+  const { addMeditation} = useMeditation();
   const { setHideTabBar } = useNavigationContext();
 
   const loop: Animated.CompositeAnimation = Animated.loop(
@@ -57,7 +59,7 @@ const MeditationCircle: React.FC<FloatingCirclePulsatingProps> = ({duration,togg
   const handleEndOfMeditation = () => {
     console.log('saving...')
     saveMeditation(duration)
-      .then(() => addMeditation(new Date()));
+      .then(() => addMeditation({userId: user!.uid, duration: duration, date: new Date().toISOString()}));
   }
 
   return <Pressable style={styles.container} onPress={handlePress}>
